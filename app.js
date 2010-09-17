@@ -1,14 +1,4 @@
-var peippo = {};
-
 peippo.store = new Sammy.Store({name: 'peippo', type: 'local'});
-
-peippo.Wine = function(params) {
-  var wine = this;
-  ['name', 'place', 'year', 'rating', 'grapes', 'type'].forEach(function(attr) {
-    wine[attr] = params[attr] || '';
-  });
-  wine.id = new Date().getTime();
-};
 
 peippo.app = $.sammy(function() {
   this.use('Template');
@@ -20,7 +10,8 @@ peippo.app = $.sammy(function() {
   this.post('#/wines', function(context) {
     var wine = new peippo.Wine(this.params);
 
-    var wines = this.store.get('wines') || [];
+    var wines = this.store.get('wines');
+    console.log(wines);
     wines.push(wine);
     this.store.set('wines', wines);
 
@@ -30,7 +21,7 @@ peippo.app = $.sammy(function() {
   });
   
   this.del('#/wines/:id', function(context) {
-    var wines = this.store.get('wines') || [],
+    var wines = this.store.get('wines'),
       id = parseInt(this.params.id, 10);
 
     for(var index in wines) {
@@ -42,8 +33,15 @@ peippo.app = $.sammy(function() {
       }
     }
   });
+  
+  this.bind('init', function() {
+    var wines = this.store.get('wines');
+    if(wines === null) { wines = []; }
+    this.store.set('wines', wines);
+  });
 });
 
 $(function() {
   peippo.app.run();
+  peippo.app.trigger('init');
 });

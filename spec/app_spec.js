@@ -3,10 +3,14 @@ describe('app', function() {
     loadFixtures('spec/fixtures/test.html');
     peippo.store.name = 'peippo_test';
     peippo.store.clearAll();
-    peippo.app.runRoute('post', '#/wines', {name: 'Beaufleur', type: 'white'});
   });
   
   describe('add a wine', function() {
+    beforeEach(function() {
+      peippo.app.trigger('init');
+      peippo.app.runRoute('post', '#/wines', {name: 'Beaufleur', type: 'white'});
+    });
+    
     // TODO: extend jasmine to allow beforeAll, afterAll
     it('should save the wine in the storage', function() {
       var wine = peippo.store.get('wines')[0];
@@ -56,6 +60,11 @@ describe('app', function() {
   });
   
   describe('remove a wine', function() {
+    beforeEach(function() {
+      peippo.app.trigger('init');
+      peippo.app.runRoute('post', '#/wines', {name: 'Beaufleur', type: 'white'});
+    });
+    
     it('should remove the wine from the storage', function() {
       var id = peippo.store.get('wines')[0].id;
       peippo.app.runRoute('delete', '#/wines/' + id);
@@ -75,6 +84,16 @@ describe('app', function() {
       runs(function() {
         expect($('#white')).toBeEmpty();
       });      
+    });
+  });
+  
+  describe('initialize', function() {
+    it('should initialize the store', function() {
+      var wines = peippo.store.get('wines');
+      expect(wines).toBeNull();
+      peippo.app.trigger('init');
+      var wines = peippo.store.get('wines');
+      expect(wines.length).toEqual(0);
     });
   });
 });
