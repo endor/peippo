@@ -1,7 +1,10 @@
-<li>
+<li id="<%= id %>">
   <h3><%= name %></h3>
   <div class="place"><%= place %></div>
   <div class="year"><%= year %></div>
   <div class="rating"><%= rating %></div>
   <div class="grapes"><%= grapes %></div>
+  <form method="DELETE" action="#/wines/<%= id %>">
+    <input type="submit" value="delete" />
+  </form>
 </li>
