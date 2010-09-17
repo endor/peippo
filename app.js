@@ -1,18 +1,32 @@
-var app = $.sammy(function() {
+var peippo = {};
+
+peippo.store = new Sammy.Store({name: 'peippo', type: 'local'});
+
+peippo.Wine = function(params) {
+  var wine = this;
+  ['name', 'place', 'year', 'rating', 'grapes'].forEach(function(attr) {
+    wine[attr] = params[attr] || '';
+  })
+};
+
+peippo.app = $.sammy(function() {
   this.use('Template');
   
-  this.store = new Sammy.Store({name: 'peippo', type: 'local'});
+  this.helpers({
+    store: peippo.store
+  })
   
   this.before(function() {
     this.type = this.params.type === 'white' ? 'white_wines' : 'red_wines';
+    delete this.params.type;
   });
   
   this.post('#/wines', function(context) {
-    var wine = { name: this.params.name };
-    
-    var wines = app.store.get(this.type) || [];
+    var wine = new peippo.Wine(this.params);
+
+    var wines = this.store.get(this.type) || [];
     wines.push(wine);
-    app.store.set(this.type, wines);
+    this.store.set(this.type, wines);
 
     this.render('list_item.template', wine, function(template) {
       $('#' + context.type).append(template);
@@ -21,5 +35,5 @@ var app = $.sammy(function() {
 });
 
 $(function() {
-  app.run();
+  peippo.app.run();
 });
