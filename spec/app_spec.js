@@ -130,6 +130,22 @@ describe('app', function() {
     });
   });
   
+  describe('see list of wines', function() {
+    it('should show a list of already added wines', function() {
+      peippo.app.trigger('init');
+      peippo.app.runRoute('post', '#/wines', { name: 'Minervois', type: 'red' });
+      waits(100);
+      runs(function() {
+        $('#red').html('');
+        peippo.app.runRoute('get', '#/wines');
+      });
+      waits(100);
+      runs(function() {
+        expect($('#red')).toContain('li:contains(\'Minervois\')');
+      });
+    });
+  });
+  
   describe('initialize', function() {
     it('should initialize the store', function() {
       var wines = peippo.store.get('wines');

@@ -74,6 +74,16 @@ peippo.app = $.sammy(function() {
     }
   });
   
+  this.get('#/wines', function(context) {
+    var wines = this.store.get('wines');
+    
+    wines.forEach(function(wine) {
+      context.render('list_item.template', wine, function(template) {
+        $('#' + wine.type).append(template);
+      });      
+    });
+  });
+  
   this.bind('init', function() {
     var wines = this.store.get('wines');
     if(wines === null) { wines = []; }
@@ -82,6 +92,6 @@ peippo.app = $.sammy(function() {
 });
 
 $(function() {
-  peippo.app.run();
+  peippo.app.run('#/wines');
   peippo.app.trigger('init');
 });
