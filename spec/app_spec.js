@@ -135,6 +135,8 @@ describe('app', function() {
       peippo.app.trigger('init');
       peippo.app.runRoute('post', '#/wines', { name: 'Minervois', type: 'red' });
       waits(100);
+      peippo.app.runRoute('post', '#/wines', { name: 'Beaufleur', type: 'white' });
+      waits(100);
       runs(function() {
         $('#red').html('');
         peippo.app.runRoute('get', '#/wines');
