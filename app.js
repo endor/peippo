@@ -77,6 +77,7 @@ peippo.app = $.sammy(function() {
   this.get('#/wines', function(context) {
     var wines = this.store.get('wines');
     
+    // TODO: figure out how renderEach works
     wines.forEach(function(wine) {
       context.render('list_item.template', wine, function(template) {
         $('#' + wine.type).append(template);
