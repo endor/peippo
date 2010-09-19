@@ -87,6 +87,49 @@ describe('app', function() {
     });
   });
   
+  describe('edit a wine', function() {
+    beforeEach(function() {
+      peippo.app.trigger('init');
+      peippo.app.runRoute('post', '#/wines', {
+        name: 'Minervois',
+        place: 'Chateau Du Donjon',
+        type: 'red',
+        year: 2007,
+        rating: 91,
+        grapes: 'Syrah, Grenache'
+      });      
+    });
+    
+    it('should render the form with the data of the wine', function() {
+      var id = peippo.store.get('wines')[0].id;
+      waits(100);
+      runs(function() {
+        peippo.app.runRoute('get', '#/wines/' + id + '/edit');
+      });
+      waits(100);
+      runs(function() {
+        expect($('#name')).toHaveValue('Minervois');
+        expect($('#place')).toHaveValue('Chateau Du Donjon');
+        expect($('#year')).toHaveValue('2007');
+        expect($('#rating')).toHaveValue('91');
+        expect($('#grapes')).toHaveValue('Syrah, Grenache');
+      });
+    });
+    
+    it('should save the updated data', function() {
+      var id = peippo.store.get('wines')[0].id;
+      waits(100);
+      runs(function() {
+        peippo.app.runRoute('put', '#/wines/' + id, {name: 'Carignan'});
+      });
+      waits(100);
+      runs(function() {
+        var wines = peippo.store.get('wines');
+        expect(wines[0].name).toEqual('Carignan');        
+      });      
+    });
+  });
+  
   describe('initialize', function() {
     it('should initialize the store', function() {
       var wines = peippo.store.get('wines');
