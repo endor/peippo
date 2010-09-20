@@ -9,6 +9,11 @@ peippo.app = $.sammy(function() {
       (new peippo.Wine({})).characteristics.forEach(function(characteristic) {
         $('#' + characteristic).val('');
       });
+    },
+    update_form: function(options) {
+      var form = $('form');
+      form.attr({action: options.action, method: options.method});
+      form.find('.submit').val(options.button);
     }
   });
   
@@ -19,9 +24,7 @@ peippo.app = $.sammy(function() {
     wines.push(wine);
     this.store.set('wines', wines);
 
-    this.render('list_item.template', wine, function(template) {
-      $('#' + wine.type).append(template);
-    });
+    this.render('list_item.template', wine).appendTo('#' + wine.type);
     
     this.clear_form();
   });
@@ -50,6 +53,10 @@ peippo.app = $.sammy(function() {
         wine.characteristics.forEach(function(characteristic) {
           $('#' + characteristic).val(wine[characteristic]);
         });
+        $('#type_' + wine.type).attr('checked', 'checked');
+        
+        this.update_form({action: '#/wines/' + wine.id, method: 'PUT', button: 'Update Wine'});
+        
         return;
       }
     }    
@@ -62,12 +69,16 @@ peippo.app = $.sammy(function() {
     for(var index in wines) {
       if(wines[index].id === id) {
         var wine = wines[index];
+
         wine.characteristics.forEach(function(characteristic) {
-          wine[characteristic] = context.params[characteristic];
+          wine[characteristic] = context.params[characteristic] || wine[characteristic];
         });
         
+        this.update_form({action: '#/wines', method: 'POST', button: 'Add Wine'});
+
         this.store.set('wines', wines);
         this.clear_form();
+        this.redirect('#/wines');
         
         return;
       }
@@ -75,6 +86,8 @@ peippo.app = $.sammy(function() {
   });
   
   this.get('#/wines', function(context) {
+    $('#red').html('');
+    $('#white').html('');
     this.renderEach('list_item.template', this.store.get('wines'), function(wine, template) {
       $('#' + wine.type).append(template);
     });      

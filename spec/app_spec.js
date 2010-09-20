@@ -128,6 +128,20 @@ describe('app', function() {
         expect(wines[0].name).toEqual('Carignan');        
       });      
     });
+    
+    it('should move the wine if the type changed', function() {
+      var id = peippo.store.get('wines')[0].id;
+      waits(100);
+      runs(function() {
+        peippo.app.runRoute('put', '#/wines/' + id, {name: 'Beaufleur', type: 'white'});
+      });
+      waits(100);
+      runs(function() {
+        expect($('#white')).toContain('li:contains(\'Beaufleur\')');
+        expect($('#white')).toContain('li:contains(\'2007\')');
+        expect($('#red').html()).toEqual('');
+      });
+    });
   });
   
   describe('see list of wines', function() {

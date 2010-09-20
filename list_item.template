@@ -4,7 +4,10 @@
   <div class="year"><%= year %></div>
   <div class="rating"><%= rating %></div>
   <div class="grapes"><%= grapes %></div>
-  <form method="DELETE" action="#/wines/<%= id %>">
-    <input type="submit" value="delete" />
-  </form>
+  <p>
+    <a href="#/wines/<%= id %>/edit">edit</a>
+    <form method="DELETE" action="#/wines/<%= id %>">
+      <input type="submit" value="delete" />
+    </form>
+  </p>
 </li>
