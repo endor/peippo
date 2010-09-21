@@ -14,33 +14,37 @@ peippo.app = $.sammy(function() {
       var form = $('form');
       form.attr({action: options.action, method: options.method});
       form.find('.submit').val(options.button);
+    },
+    storage: function(callback) {
+      var wines = callback(this.store.get('wines'));
+      this.store.set('wines', wines);
     }
   });
   
   this.post('#/wines', function(context) {
     var wine = new peippo.Wine(this.params);
 
-    var wines = this.store.get('wines');
-    wines.push(wine);
-    this.store.set('wines', wines);
+    this.storage(function(wines) {
+      wines.push(wine);
+      return wines;
+    });
 
     this.render('list_item.template', wine).appendTo('#' + wine.type);
-    
     this.clear_form();
   });
   
   this.del('#/wines/:id', function() {
-    var wines = this.store.get('wines'),
-      id = parseInt(this.params.id, 10);
+    var id = parseInt(this.params.id, 10);
 
-    for(var index in wines) {
-      if(wines[index].id === id) {
-        wines.splice(index, 1);
-        $('#' + id).remove();
-        this.store.set('wines', wines);
-        return;
-      }
-    }
+    this.storage(function(wines) {
+      for(var index in wines) {
+        if(wines[index].id === id) {
+          wines.splice(index, 1);
+          $('#' + id).remove();
+          return wines;
+        }
+      }        
+    });
   });
   
   this.get('#/wines/:id/edit', function() {
@@ -63,26 +67,25 @@ peippo.app = $.sammy(function() {
   });
   
   this.put('#/wines/:id', function(context) {
-    var wines = this.store.get('wines'),
-      id = parseInt(this.params.id, 10);
+    var id = parseInt(this.params.id, 10);
 
-    for(var index in wines) {
-      if(wines[index].id === id) {
-        var wine = wines[index];
+    this.storage(function(wines) {
+      for(var index in wines) {
+        if(wines[index].id === id) {
+          var wine = wines[index];
 
-        wine.characteristics.forEach(function(characteristic) {
-          wine[characteristic] = context.params[characteristic] || wine[characteristic];
-        });
-        
-        this.update_form({action: '#/wines', method: 'POST', button: 'Add Wine'});
+          wine.characteristics.forEach(function(characteristic) {
+            wine[characteristic] = context.params[characteristic] || wine[characteristic];
+          });
 
-        this.store.set('wines', wines);
-        this.clear_form();
-        this.redirect('#/wines');
-        
-        return;
-      }
-    }
+          return wines;
+        }
+      }      
+    });
+    
+    this.update_form({action: '#/wines', method: 'POST', button: 'Add Wine'});
+    this.clear_form();
+    this.redirect('#/wines');
   });
   
   this.get('#/wines', function(context) {
@@ -94,9 +97,9 @@ peippo.app = $.sammy(function() {
   });
   
   this.bind('init', function() {
-    var wines = this.store.get('wines');
-    if(wines === null) { wines = []; }
-    this.store.set('wines', wines);
+    this.storage(function(wines) {
+      return wines || [];
+    });
   });
 });
 
