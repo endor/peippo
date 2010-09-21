@@ -1,9 +1,9 @@
 <li id="<%= id %>">
   <h3><%= name %></h3>
-  <div class="place"><%= place %></div>
-  <div class="year"><%= year %></div>
-  <div class="rating"><%= rating %></div>
-  <div class="grapes"><%= grapes %></div>
+  <div class="place">Place: <%= place %></div>
+  <div class="year">Year: <%= year %></div>
+  <div class="rating">Rating: <%= rating %>/100</div>
+  <div class="grapes">Grapes: <%= grapes %></div>
   <p>
     <a href="#/wines/<%= id %>/edit">edit</a>
     <form method="DELETE" action="#/wines/<%= id %>">

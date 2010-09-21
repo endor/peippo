@@ -1,0 +1,72 @@
+h1 {
+  position: absolute;
+  left: 50px;
+}
+
+input {
+  border: solid 1px #666666;  
+}
+
+.input {
+  position: absolute;
+  left: 100px;
+}
+
+.column {
+  position: absolute;
+  top: 90px;
+  width: 270px;
+  padding: 10px;
+  padding-top: 0px;
+  min-height: 350px;  
+}
+
+.column h2 {
+  margin-left: 10px;
+}
+
+.left {
+  left: 50px;
+  border: solid 1px #666666;
+  background-color: #EEEEEE;
+}
+
+.middle {
+  left: 370px;
+  border: solid 1px #AA4444;
+  background-color: #FFEEEE;
+}
+
+.right {
+  left: 690px;
+  border: solid 1px #CCBB88;
+  background-color: #FFFFEE;
+}
+
+.wines {
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.wines li {
+  border: solid 1px gray;
+  margin: 0px;
+  margin-top: 5px;
+  padding: 0px;
+  padding-left: 5px;
+  width: 265px;
+}
+
+.wines li h3 {
+  color: #333333;
+  padding: 0px;
+  margin: 0px;
+  margin-top: 5px;
+}
+
+.wines li input {
+}
+
+.wines li a {
+}

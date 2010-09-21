@@ -13,51 +13,59 @@
     <link type="text/css" rel="stylesheet" href="app.css" />
   </head>
   <body>
-    <h1>Peippo</h1>
-    
-    <h2>New Wine</h2>
-    <form method="POST" action="#/wines">
-      <p>
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" />
-      </p>
+    <div id="container">
+      <h1>Peippo</h1>
 
-      <p>
-        <input type="radio" name="type" value="red" id="type_red" checked="checked" class="type red"/>
-        <label for="type_red">Red</label>
-        <input type="radio" name="type" value="white" id="type_white" class="type white"/>
-        <label for="type_white">White</label>
-      </p>
-      
-      <p>
-        <label for="place">Place</label>
-        <input type="text" name="place" id="place" />
-      </p>
-      
-      <p>
-        <label for="year">Year</label>
-        <input type="text" name="year" id="year" />
-      </p>
-      
-      <p>
-        <label for="rating">Rating</label>
-        <input type="text" name="rating" id="rating" />
-      </p>
-      
-      <p>
-        <label for="grapes">Grapes</label>
-        <input type="text" name="grapes" id="grapes" />
-      </p>
-      
-      <p>
-        <input type="submit" value="Add Wine" class="submit" />
-      </p>
-    </form>
-    
-    <h2>Red Wines</h2>
-    <ul id="red"></ul>
-    
-    <h2>White Wines</h2>
-    <ul id="white"></ul>
+      <div class="left column">
+        <h2>New Wine</h2>
+        <form method="POST" action="#/wines">
+          <p>
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" class="input" />
+          </p>
+
+          <p>
+            <input type="radio" name="type" value="red" id="type_red" checked="checked" class="type red"/>
+            <label for="type_red">Red</label>
+            <input type="radio" name="type" value="white" id="type_white" class="type white"/>
+            <label for="type_white">White</label>
+          </p>
+
+          <p>
+            <label for="place">Place</label>
+            <input type="text" name="place" id="place" class="input" />
+          </p>
+
+          <p>
+            <label for="year">Year</label>
+            <input type="text" name="year" id="year" class="input" />
+          </p>
+
+          <p>
+            <label for="rating">Rating</label>
+            <input type="text" name="rating" id="rating" class="input" />
+          </p>
+
+          <p>
+            <label for="grapes">Grapes</label>
+            <input type="text" name="grapes" id="grapes" class="input" />
+          </p>
+
+          <p>
+            <input type="submit" value="Add Wine" class="submit" />
+          </p>
+        </form>        
+      </div>
+
+      <div class="middle column">
+        <h2>Red Wines</h2>
+        <ul id="red" class="wines"></ul>        
+      </div>
+
+      <div class="right column">
+        <h2>White Wines</h2>
+        <ul id="white" class="wines"></ul>
+      </div>
+    </div>
   </body>
 </html>
